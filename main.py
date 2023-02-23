@@ -100,6 +100,50 @@ def move(game_state: typing.Dict) -> typing.Dict:
     # TODO: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
     # opponents = game_state['board']['snakes']
 
+
+    # ************ older solution, may be cleaner ************
+    # opponents = game_state['board']['snakes']
+    # for snake in opponents:
+    #     for block in snake['body']:
+    #         if my_head["y"] == block["y"]:
+    #             #head to the right of body
+    #             if my_head["x"] == block["x"] + 1:
+    #                 is_move_safe["left"] = False
+    #             #head to the left of body
+    #             if my_head["x"] == block["x"] - 1:
+    #                 is_move_safe["right"] = False
+    #         if my_head["x"] == block["x"]:
+    #             #head above body
+    #             if my_head["y"] == block["y"] + 1:
+    #                 is_move_safe["down"] = False
+    #             #head below body
+    #             if my_head["y"] == block["y"] - 1:
+    #                 is_move_safe["up"] = False
+
+
+    opponents = game_state['board']['snakes']
+    all_bodies = []
+    for snake in opponents:
+        all_bodies.append(snake['body'])
+    all_bodies.append(my_body)
+    opponents.append(my_body)
+    for body in all_bodies:
+        for block in body:
+            if my_head["y"] == block["y"]:
+                #head to the right of body
+                if my_head["x"] == block["x"] + 1:
+                    is_move_safe["left"] = False
+                    #head to the left of body
+                    if my_head["x"] == block["x"] - 1:
+                        is_move_safe["right"] = False
+            if my_head["x"] == block["x"]:
+                #head above body
+                if my_head["y"] == block["y"] + 1:
+                    is_move_safe["down"] = False
+                    #head below body
+                    if my_head["y"] == block["y"] - 1:
+                        is_move_safe["up"] = False
+
     # Are there any safe moves left?
     safe_moves = []
     for move, isSafe in is_move_safe.items():
